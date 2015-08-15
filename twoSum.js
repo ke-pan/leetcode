@@ -4,21 +4,17 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-    var i, j = nums.length-1, results = [];
-    nums.sort(function (a, b) {return a-b;});
-    for(i = 0; i < j; i++) {
-        for(; j > i; j--) {
-//	    console.log(i, j);
-            if(target == nums[i] + nums[j]) {
-                results.push(i+1, j+1);
-                return results;
-            } else if (target > nums[i] + nums[j]) {
-                break;
-            }
+    var i,j,h = {}, results=[];
+    for(i=0; i<nums.length; i++) {
+        j = target - nums[i];
+        if(h[''+j] !== undefined) {
+            results.push(h[''+j], i+1);
+            break;
+        } else {
+            h[''+nums[i]] = i+1;
         }
     }
     return results;
 };
 
 console.log(twoSum([3,2,4], 6));
-
