@@ -9,17 +9,12 @@ var lengthOfLongestSubstring = function(s) {
     len = 0,
     maxLen = 0,
     h = {};
-  while (j < s.length) {
-    if (h[s[j]]) {
-      h[s[i]] = h[s[i]] - 1;
-      i++;
-      len--;
+  for (; j < s.length; j++) {
+    if (h[s[j]] >= i) {
+      i = h[s[j]] + 1;
     }
-    else {
-      h[s[j]] = 1;
-      j++;
-      len++;
-    }
+    h[s[j]] = j;
+    len = j - i + 1;
     if (maxLen < len) maxLen = len;
   }
   return maxLen;
