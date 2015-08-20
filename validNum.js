@@ -3,81 +3,31 @@
  * @return {boolean}
  */
 var isNumber = function(s) {
-  var i = 0;
+  var
+    i = 0,
+    isNumeric = false;
   while (i < s.length && s[i] == ' ') i++;
-  if (s[i] == '-' || s[i] == '+') i++;
-  if (i == s.length) return false;
-  if (s[i] == '.') {
+  if (i < s.length && (s[i] == '-' || s[i] == '+')) i++;
+  while (i < s.length && !isNaN(s[i]) && s[i] != ' ') {
     i++;
-    if (isNaN(s[i]) || s[i] == ' ') return false;
-    while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-    if (i == s.length) return true;
-    if (s[i] == ' ') {
-      while (i < s.length && s[i] == ' ') i++;
-      if (i < s.length) return false;
-      else return true;
-    }
-    else if (s[i] == 'e') {
+    isNumeric = true;
+  }
+  if (s[i] == '.') i++;
+  while (i < s.length && !isNaN(s[i]) && s[i] != ' ') {
+    i++;
+    isNumeric = true;
+  }
+  if (isNumeric && s[i] == 'e') {
+    i++;
+    isNumeric = false;
+    if (i < s.length && (s[i] == '-' || s[i] == '+')) i++;
+    while (i < s.length && !isNaN(s[i]) && s[i] != ' ') {
       i++;
-      if (s[i] == '-' || s[i] == '+') i++;
-      if (isNaN(s[i]) || s[i] == ' ') return false;
-      while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-      if (i == s.length) return true;
-      if (s[i] == ' ') {
-        while (i < s.length && s[i] == ' ') i++;
-        if (i < s.length) return false;
-        else return true;
-      }
-      else return false;
+      isNumeric = true;
     }
-    else return false;
   }
-  else if (isNaN(s[i])) return false;
-  while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-  if (i == s.length) return true;
-  if (s[i] == '.') {
-    i++;
-    while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-    if (i == s.length) return true;
-    if (s[i] == ' ') {
-      while (i < s.length && s[i] == ' ') i++;
-      if (i < s.length) return false;
-      else return true;
-    }
-    else if (s[i] == 'e') {
-      i++;
-      if (s[i] == '-' || s[i] == '+') i++;
-      if (isNaN(s[i]) || s[i] == ' ') return false;
-      while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-      if (i == s.length) return true;
-      if (s[i] == ' ') {
-        while (i < s.length && s[i] == ' ') i++;
-        if (i < s.length) return false;
-        else return true;
-      }
-      else return false;
-    }
-    else return false;
-  }
-  else if (s[i] == 'e') {
-    i++;
-    if (s[i] == '-' || s[i] == '+') i++;
-    if (isNaN(s[i]) || s[i] == ' ') return false;
-    while (i < s.length && !isNaN(s[i]) && s[i] !== ' ') i++;
-    if (i == s.length) return true;
-    if (s[i] == ' ') {
-      while (i < s.length && s[i] == ' ') i++;
-      if (i < s.length) return false;
-      else return true;
-    }
-    else return false;
-  }
-  else if (s[i] == ' ') {
-    while (i < s.length && s[i] == ' ') i++;
-    if (i < s.length) return false;
-    else return true;
-  }
-  else return false;
+  while (i < s.length && s[i] == ' ') i++;
+  return isNumeric && i == s.length;
 };
 
 
@@ -93,3 +43,4 @@ console.assert(!isNumber('.'));
 console.assert(isNumber('-1'));
 console.assert(isNumber('-1e+5'));
 console.assert(!isNumber('0e'));
+console.assert(!isNumber('1+6'));
