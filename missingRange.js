@@ -8,28 +8,21 @@
  * @return {Array}
  */
 
-var missingRange = function(arr) {
-  if (arr.length == 0) return ["0->99"];
-  if (arr.length == 100) return [];
-  var i, last = -1;
-  var start, end;
+var missingRange = function(arr, start, end) {
+  arr.unshift(start - 1);
+  arr.push(end + 1);
+  var i;
   var results = [];
-  for (i = 0; i < arr.length; i++) {
-    if (arr[i] - last != 1) {
-      start = last + 1;
-      end = arr[i] - 1;
-      if (start == end) results.push('' + start);
-      else results.push(start + '->' + end);
+  for (i = 1; i < arr.length; i++) {
+    if (arr[i] - arr[i - 1] != 1) {
+      results.push(getRange(arr[i - 1] + 1, arr[i] - 1));
     }
-    last = arr[i]
-  }
-  if (arr[i - 1] < 99) {
-    start = arr[i - 1] + 1;
-    end = 99;
-    if (start == end) results.push('' + start);
-    else results.push(start + '->' + end);
   }
   return results;
+}
+
+var getRange = function(from, to) {
+  return (from == to) ? '' + from : from + '->' + to;
 }
 
 var equalArray = function(arr1, arr2) {
@@ -40,11 +33,5 @@ var equalArray = function(arr1, arr2) {
   return is_same;
 }
 
-console.assert(equalArray(missingRange([]), ["0->99"]));
-var a = [];
-var i = 0;
-for (; i < 100; i++) a.push(i);
-console.assert(equalArray(missingRange(a), []));
-console.assert(equalArray(missingRange([0, 1, 3, 50, 75]), ["2", '4->49',
-  '51->74', '76->99'
-]))
+console.log(missingRange([], 0, 99));
+console.log(missingRange([0, 1, 3, 50, 75], 0, 99));
