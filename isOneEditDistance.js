@@ -9,41 +9,33 @@
 var isOneEditDistance = function(s, t) {
   var S, T;
   if (s.length < t.length) {
-    S = '^' + t;
-    T = '^' + s;
+    S = t;
+    T = s;
   }
   else {
-    S = '^' + s;
-    T = '^' + t;
+    S = s;
+    T = t;
   }
 
   if (S.length - T.length > 1) return false;
-  else if (T.length == 1) return true;
-
+  var i, j, err;
   if (S.length - T.length == 1) {
-    for (var i = 1; i <= T.length; i++) {
-      var j = 0;
-      var k = 0;
-      while (S[j] == T[k]) {
-        j++;
-        k++;
-        if (j == i) j++;
-        if (k == T.length) return true
+    for (i = 0, j = 0, err = 0; i < T.length && err < 2; i++, j++) {
+      if (S[j] != T[i]) {
+        i--;
+        err++;
       }
     }
-    return false;
   }
   else {
-    for (var i = 1; i < T.length; i++) {
-      var j = 0;
-      while (S[j] == T[j]) {
-        j++;
-        if (j == i) j++;
-        if (j == T.length) return true
+    for (i = 0, err = 0; i < T.length && err < 2; i++) {
+      if (S[i] != T[i]) {
+        err++;
       }
     }
-    return false;
   }
+  if (err == 2) return false
+  else return true;
 };
 
 console.log(isOneEditDistance('', ''));
