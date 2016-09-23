@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>leetcode playground</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+    isMatchDP = function(s, p) {
+      hash = {};
+      function dp(i, j) {
+        var key = i + ',' + j;
+        console.log(key)
+        if (hash[key] !== undefined) {
+          return hash[key];
+        }
+        if (p.charAt(j) === '') {
+          return hash[key] = (s.charAt(i) === '');
+        } else if (p.charAt(j+1) === '*') {
+          var k = i;
+          while(!dp(k, j+2)) {
+            if (p.charAt(j) === '.' ? s.charAt(k) === '' : s.charAt(k) !== p.charAt(j)) {
+              return hash[key] = false;
+            }
+            k += 1;
+          }
+          return hash[key] = true;
+        } else if (p.charAt(j) === '.') {
+          return hash[key] = s.charAt(i) !== '' && dp(i + 1, j + 1);
+        } else {
+          return hash[key] = s.charAt(i) === p.charAt(j);
+        }
+      }
+      console.log(hash);
+      return dp(0, 0);
+    }
+    console.log(isMatchDP('ab', 'ac'));
+    </script>
+  </body>
+</html>
